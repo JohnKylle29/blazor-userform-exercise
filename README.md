@@ -34,7 +34,7 @@ Here’s how the project is organized:
 - `/Components/UserForm.razor`  
   - Contains the reusable form UI and handles user input  
 
-- `/Pages/UserFormDemo.razor`  
+- `/Components/UserFormDemo.razor`  
   - Demonstrates how the component is used  
 
 - `/Models/UserModel.cs`  
