@@ -51,7 +51,6 @@ You can run the project locally by following these steps:
 1. Clone the repository: git clone https://github.com/JohnKylle29/blazor-userform-exercise.git
 2. Open the solution in Visual Studio
 3. Run the project
-4. Navigate to:
 
 ---
 
