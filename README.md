@@ -65,3 +65,10 @@ You can run the project locally by following these steps:
 ## Final Thoughts
 I focused on keeping the implementation simple and aligned with the requirements.  
 The component is reusable, easy to understand, and can be extended further if needed.
+
+---
+
+## Additional Notes
+- Developed using Visual Studio 2026
+- The email uniqueness check is mocked
+- Use `test@gmail.com` to simulate a duplicate email scenario
