@@ -1,0 +1,28 @@
+﻿@* 5th parent *@
+@page "/userformdemo"
+@rendermode InteractiveServer
+@using UserFormApp.Models
+
+<h3>User Form Exercise</h3>
+
+<UserForm Model="user" OnSubmit="HandleSubmit" ButtonText="Submit" />
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success mt-3">
+        @message
+    </div>
+}
+
+@code {
+    private UserModel user = new();
+    private string message;
+
+    private async Task HandleSubmit(UserModel data)
+    {
+
+        await Task.Delay(500);
+
+        message = $"Saved: {data.UserName} ({data.EmailAddress})";
+    }
+}

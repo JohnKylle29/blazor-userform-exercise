@@ -1,0 +1,92 @@
+﻿@* 4th component *@
+@using UserFormApp.Models
+@inject UserFormApp.Services.EmailService EmailService
+
+<EditForm Model="@localUser" OnValidSubmit="HandleSubmit" FormName="UserForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <!-- Name (MANUAL - requirement) -->
+    <div class="mb-3">
+        <label>Name</label>
+        <InputText Value="@localUser.UserName"
+                   ValueChanged="(val => localUser.UserName = val)"
+                   ValueExpression="() => localUser.UserName"
+                   class="form-control" />
+    </div>
+
+    <!-- Address -->
+    <div class="mb-3">
+        <label>Address</label>
+        <InputText @bind-Value="localUser.UserAddress"
+                   class="form-control" />
+    </div>
+
+    <!-- Age -->
+    <div class="mb-3">
+        <label>Age</label>
+        <InputNumber @bind-Value="localUser.Age"
+                     class="form-control" />
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label>Email</label>
+        <InputText @bind-Value="localUser.EmailAddress"
+                   class="form-control" />
+
+        @if (!string.IsNullOrEmpty(emailError))
+        {
+            <div class="text-danger">@emailError</div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+        @(isSubmitting ? "Saving..." : ButtonText)
+    </button>
+</EditForm>
+
+@code {
+    [Parameter] public UserModel Model { get; set; }
+    [Parameter] public EventCallback<UserModel> OnSubmit { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Submit";
+
+    private UserModel localUser = new();
+    private bool isSubmitting = false;
+    private string emailError = "";
+
+    protected override void OnParametersSet()
+    {
+        if (Model != null)
+        {
+            localUser = new UserModel
+            {
+                UserName = Model.UserName,
+                UserAddress = Model.UserAddress,
+                Age = Model.Age,
+                EmailAddress = Model.EmailAddress
+            };
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (isSubmitting) return;
+
+        isSubmitting = true;
+        emailError = "";
+
+        var isUnique = await EmailService.IsEmailUnique(localUser.EmailAddress);
+
+        if (!isUnique)
+        {
+            emailError = "Email already exists.";
+            isSubmitting = false;
+            return;
+        }
+
+        await OnSubmit.InvokeAsync(localUser);
+
+        isSubmitting = false;
+    }
+}
